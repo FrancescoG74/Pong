@@ -17,7 +17,8 @@ component::component(actor* owner, int updateOrder)
 
 component::~component()
 {
-	mOwner->removeComponent(this);
+	if(mOwner != nullptr)
+		mOwner->removeComponent(this);
 }
 
 void component::update(float deltaTime)
