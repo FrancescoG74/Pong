@@ -18,6 +18,6 @@ add_executable(${PROJECT_NAME} "sources/main.cpp" "sources/game.cpp" "sources/ac
     "sources/redpad.cpp" "sources/bluepad.cpp" "sources/math.cpp" "sources/ball.cpp" 
     "sources/circle.cpp" "sources/fonts.cpp" ) 
 
-target_link_libraries(${PROJECT_NAME} rt SDL2 SDL2_image)
+target_link_libraries(${PROJECT_NAME} rt SDL2 SDL2_image SDL2_ttf)
 
 file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION .)
