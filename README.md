@@ -1,8 +1,7 @@
 PREREQUISITES
 
 ```
-sudo apt install libsdl2-dev
-sudo apt install libsdl2-image-dev
+sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf
 ```
 
 BUILD
