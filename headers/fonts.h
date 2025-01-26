@@ -49,10 +49,10 @@ protected:
 
 private:
 	//The window renderer
-	SDL_Renderer* gRenderer = NULL;
+	//SDL_Renderer* gRenderer = NULL;
 
 	//Globally used font
-	TTF_Font* gFont = NULL;
+	//TTF_Font* gFont = NULL;
 
 };
 

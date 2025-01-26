@@ -25,7 +25,7 @@ font::~font()
 
 void font::draw(SDL_Renderer* renderer)
 {
-	if (mTexture)
+/*	if (mTexture)
 	{
 		SDL_Rect r;
 		// Scale the width/height by owner's scale
@@ -39,7 +39,8 @@ void font::draw(SDL_Renderer* renderer)
 		SDL_RenderCopyEx(renderer,mTexture,nullptr,&r,
 			-Math::ToDegrees(mOwner->getRotation()),nullptr,SDL_FLIP_NONE);
 	}
- }
+*/
+}
 
 void font::setTexture(SDL_Texture* texture)
 {

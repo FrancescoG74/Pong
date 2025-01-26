@@ -74,7 +74,7 @@ void game::loadData()
 	temp->setPosition(vector2(431.0f, 328.0f));
 
 	// Create the "far back" background
-	background* bg = new background(temp); //NOBODY DESTROY BG <--- BE CAREFUL, FIX IT
+	background* bg = new background(temp);
 	bg->setScreenSize(vector2(862.0f, 657.0f));
 	std::vector<SDL_Texture*> bgtexs = {
 		getTexture("resources/background_star.png"),
@@ -100,6 +100,36 @@ void game::loadData()
 	mBall->setScale(1.0f);
 	mBall->setState(actor::EActive);
 
+	// Create Score
+	this->loadScore();
+
+
+}
+
+bool game::loadScore()
+{
+	//Loading success flag
+	bool success = true;
+
+	//Open the font
+	mFont = TTF_OpenFont( "TheConfessionFullRegular-8qGz.ttf",56 );
+	if( mFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	else
+	{
+		//Render text
+		SDL_Color textColor = { 0, 0, 0 };
+		if( !gTextTexture.loadFromRenderedText( "0 1 2 3 4 5 6 7 8 9", textColor ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = false;
+		}
+	}
+
+	return success;
 }
 
 void game::unloadData()

@@ -3,6 +3,7 @@
 
 #include "SDL2/SDL.h"
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <unordered_map>
 #include <string>
 #include <vector>
@@ -34,6 +35,7 @@ private:
 	void generateOutput();
 	void loadData();
 	void unloadData();
+	bool loadScore();
 	// Map of textures loaded
 	std::unordered_map<std::string, SDL_Texture*> mTextures;
 
@@ -52,6 +54,10 @@ private:
 	bool mUpdatingActors;
 	int	 mNbullet;
 	bool mToBeReleased;
+
+	//Globally used font
+	TTF_Font* mFont = NULL;
+
 
 };
 
