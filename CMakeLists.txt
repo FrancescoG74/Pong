@@ -16,7 +16,7 @@ include_directories(${SDL2_INCLUDE_DIR} headers)
 add_executable(${PROJECT_NAME} "sources/main.cpp" "sources/game.cpp" "sources/actor.cpp" 
     "sources/sprite.cpp" "sources/component.cpp" "sources/background.cpp" "sources/anim.cpp" 
     "sources/redpad.cpp" "sources/bluepad.cpp" "sources/math.cpp" "sources/ball.cpp" 
-    "sources/circle.cpp" ) 
+    "sources/circle.cpp" "sources/fonts.cpp" ) 
 
 target_link_libraries(${PROJECT_NAME} rt SDL2 SDL2_image)
 

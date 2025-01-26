@@ -2,6 +2,7 @@
 
 #include "math.h"
 #include "sprite.h"
+#include "fonts.h"
 #include "circle.h"
 #include "actor.h"
 #include "redpad.h"
@@ -9,20 +10,20 @@
 #include "ball.h"
 #include "game.h"
 
-sprite::sprite(actor* owner, int drawOrder)
+font::font(actor* owner, int drawOrder)
 :component(owner),mTexture(nullptr),mDrawOrder(drawOrder)
 ,mTexWidth(0),mTexHeight(0)
 {
-	mOwner->getGame()->addSprite(this);
+	//mOwner->getGame()->addSprite(this);
 }
 
-sprite::~sprite()
+font::~font()
 {
-	std::cout << "remove sprite" << std::endl;
-	mOwner->getGame()->removeSprite(this);
+	std::cout << "remove font" << std::endl;
+	//mOwner->getGame()->removeSprite(this);
 }
 
-void sprite::draw(SDL_Renderer* renderer)
+void font::draw(SDL_Renderer* renderer)
 {
 	if (mTexture)
 	{
@@ -40,7 +41,7 @@ void sprite::draw(SDL_Renderer* renderer)
 	}
  }
 
-void sprite::setTexture(SDL_Texture* texture)
+void font::setTexture(SDL_Texture* texture)
 {
 	mTexture = texture;
 	// Set width/height
