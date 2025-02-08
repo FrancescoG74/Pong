@@ -23,12 +23,6 @@ public:
 	int getTexHeight() const { return mTexHeight; }
 	int getTexWidth() const { return mTexWidth; }
 
-	//Loads image at specified path
-	bool loadFromFile( /*std::string path*/ );
-		
-	//Creates image from font string
-	bool loadFromRenderedText( /*std::string textureText, SDL_Color textColor*/ );
-
 	//Set color modulation
 	void setColor( Uint8 red, Uint8 green, Uint8 blue );
 

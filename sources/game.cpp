@@ -108,7 +108,6 @@ void game::loadData()
 	mBall->setState(actor::EActive);
 
 	// Create Score
-//	this->loadScore();
 	getTrueTypeFont("resources/scoreFonts.ttf");
 
 
@@ -224,28 +223,6 @@ TTF_Font* game::getTrueTypeFont(const std::string& fontFileName)
 		mTrueTypeFonts.emplace(fontFileName.c_str(), Ttfont);
 	}
 	return Ttfont;
-
-/*
-	//Open the font
-	TTF_Font
-	mFont = TTF_OpenFont( "TheConfessionFullRegular-8qGz.ttf",56 );
-	if( mFont == NULL )
-	{
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
-		success = false;
-	}
-	else
-	{
-		//Render text
-		SDL_Color textColor = { 0, 0, 0 };
-		if( !mTexture->loadFromRenderedText( "0 1 2 3 4 5 6 7 8 9", textColor ) )
-		{
-			printf( "Failed to render text texture!\n" );
-			success = false;
-		}
-	}
-
-	return success;*/
 }
 
 void game::processInput()
