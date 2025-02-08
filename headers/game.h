@@ -22,6 +22,9 @@ public:
 	void addSprite(sprite* sprite);
 	void removeSprite(sprite* sprite);
 
+	void addFont(font* font);
+	void removeFont(font* font);
+
 	SDL_Texture* getTexture(const std::string& fileName);
 
 	void setUpdatingActors(bool setUA){ mUpdatingActors = setUA; }

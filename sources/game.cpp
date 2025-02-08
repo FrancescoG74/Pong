@@ -313,6 +313,33 @@ void game::removeSprite(sprite* sprite)
 	mSprites.erase(iter);
 }
 
+void game::addFont(font* font)
+{
+	// Find the insertion point in the sorted vector
+	// (The first element with a higher draw order than me)
+	int myDrawOrder = font->getDrawOrder();
+	auto iter = mFonts.begin();
+	for ( ;
+		iter != mFonts.end();
+		++iter)
+	{
+		if (myDrawOrder < (*iter)->getDrawOrder())
+		{
+			break;
+		}
+	}
+
+	// Inserts element before position of iterator
+	mFonts.insert(iter, font);
+}
+
+void game::removeFont(font* font)
+{
+	// (We can't swap because it ruins ordering)
+	auto iter = std::find(mFonts.begin(), mFonts.end(), font);
+	mFonts.erase(iter);
+}
+
 bluepad* game::getBluepad()
 {
 	bluepad* bluepadItem;
