@@ -24,10 +24,10 @@ public:
 	int getTexWidth() const { return mTexWidth; }
 
 	//Loads image at specified path
-	bool loadFromFile( std::string path );
+	bool loadFromFile( /*std::string path*/ );
 		
 	//Creates image from font string
-	bool loadFromRenderedText( std::string textureText, SDL_Color textColor );
+	bool loadFromRenderedText( /*std::string textureText, SDL_Color textColor*/ );
 
 	//Set color modulation
 	void setColor( Uint8 red, Uint8 green, Uint8 blue );
@@ -39,10 +39,11 @@ public:
 	void setAlpha( Uint8 alpha );
 		
 	//Renders texture at given point
-	void render( int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
+//	void render( int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
 
 protected:
 	SDL_Texture* mTexture;
+	TTF_Font* mFont;
 	int mDrawOrder;
 	int mTexWidth;
 	int mTexHeight;
@@ -51,8 +52,6 @@ private:
 	//The window renderer
 	//SDL_Renderer* gRenderer = NULL;
 
-	//Globally used font
-	//TTF_Font* gFont = NULL;
 
 };
 

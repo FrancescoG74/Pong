@@ -2,7 +2,7 @@
 
 #include "math.h"
 #include "sprite.h"
-#include "fonts.h"
+#include "font.h"
 #include "circle.h"
 #include "actor.h"
 #include "redpad.h"
@@ -49,11 +49,11 @@ void font::setTexture(SDL_Texture* texture)
 	SDL_QueryTexture(texture, nullptr, nullptr, &mTexWidth, &mTexHeight);
 }
 
-bool font::loadFromFile( std::string path )
+bool font::loadFromFile( /*std::string path*/ )
 {
 	//Get rid of preexisting texture
 //	free();
-
+/*
 	//The final texture
 	SDL_Texture* newTexture = NULL;
 
@@ -87,14 +87,15 @@ bool font::loadFromFile( std::string path )
 
 	//Return success
 	mTexture = newTexture;
+*/
 	return mTexture != NULL;
 }
 
-bool font::loadFromRenderedText( std::string textureText, SDL_Color textColor )
+bool font::loadFromRenderedText( /*std::string textureText, SDL_Color textColor*/ )
 {
 	//Get rid of preexisting texture
 //	free();
-
+/*
 	//Render text surface
 	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
 	if( textSurface == NULL )
@@ -119,7 +120,7 @@ bool font::loadFromRenderedText( std::string textureText, SDL_Color textColor )
 		//Get rid of old surface
 		SDL_FreeSurface( textSurface );
 	}
-	
+*/	
 	//Return success
 	return mTexture != NULL;
 }
@@ -141,7 +142,7 @@ void font::setAlpha( Uint8 alpha )
 	//Modulate texture alpha
 	SDL_SetTextureAlphaMod( mTexture, alpha );
 }
-
+/*
 void font::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
 {
 	//Set rendering space and render to screen
@@ -157,3 +158,4 @@ void font::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center
 	//Render to screen
 	SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
 }
+*/

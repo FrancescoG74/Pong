@@ -1,5 +1,6 @@
 #include "math.h"
 #include "sprite.h"
+#include "font.h"
 #include "circle.h"
 #include "actor.h"
 #include "redpad.h"

@@ -45,6 +45,8 @@ private:
 	std::vector<actor*> mPendingActors;
 	// All the sprite components drawn
 	std::vector<sprite*> mSprites;
+	// All the sprite components drawn
+	std::vector<font*> mFonts;
 
 	SDL_Window* mWindow;
 	SDL_Renderer* mRenderer;
@@ -56,7 +58,7 @@ private:
 	bool mToBeReleased;
 
 	//Globally used font
-	TTF_Font* mFont = NULL;
+//	TTF_Font* mFont = NULL;
 
 
 };

@@ -3,6 +3,7 @@
 #include "math.h"
 #include "circle.h"
 #include "sprite.h"
+#include "font.h"
 #include "actor.h"
 #include "redpad.h"
 #include "bluepad.h"

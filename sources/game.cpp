@@ -5,6 +5,7 @@
 #include "component.h"
 #include "circle.h"
 #include "sprite.h"
+#include "font.h"
 #include "actor.h"
 #include "redpad.h"
 #include "bluepad.h"
@@ -110,7 +111,7 @@ bool game::loadScore()
 {
 	//Loading success flag
 	bool success = true;
-
+/*
 	//Open the font
 	mFont = TTF_OpenFont( "TheConfessionFullRegular-8qGz.ttf",56 );
 	if( mFont == NULL )
@@ -122,13 +123,13 @@ bool game::loadScore()
 	{
 		//Render text
 		SDL_Color textColor = { 0, 0, 0 };
-		if( !gTextTexture.loadFromRenderedText( "0 1 2 3 4 5 6 7 8 9", textColor ) )
+		if( !mTexture->loadFromRenderedText( "0 1 2 3 4 5 6 7 8 9", textColor ) )
 		{
 			printf( "Failed to render text texture!\n" );
 			success = false;
 		}
 	}
-
+*/
 	return success;
 }
 
