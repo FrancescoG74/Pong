@@ -26,6 +26,7 @@ public:
 	void removeFont(font* font);
 
 	SDL_Texture* getTexture(const std::string& fileName);
+	SDL_Texture* getTextureFont(const std::string& fileNameTTF, std::string textureText);
 
 	void setUpdatingActors(bool setUA){ mUpdatingActors = setUA; }
 
@@ -38,9 +39,11 @@ private:
 	void generateOutput();
 	void loadData();
 	void unloadData();
-	bool loadScore();
+	TTF_Font* getTrueTypeFont(const std::string& fontFileName);
 	// Map of textures loaded
 	std::unordered_map<std::string, SDL_Texture*> mTextures;
+	// Map of fonts true type loaded
+	std::unordered_map<std::string, TTF_Font*> mTrueTypeFonts;
 
 	// All the actors in the game
 	std::vector<actor*> mActors;

@@ -42,6 +42,11 @@ bool game::initialize()
 		return false;
 	}
 
+	if (TTF_Init() == -1) {
+		SDL_Log("Unable to initialize TTF_Init: %s", SDL_GetError());
+		return false;
+	}
+
 	loadData();
 
 	mTicksCount = SDL_GetTicks();
@@ -61,6 +66,7 @@ void game::runLoop()
 void game::shutdown()
 {
 	unloadData();
+	TTF_Quit();
 	IMG_Quit();
 	SDL_DestroyRenderer(mRenderer);
 	SDL_DestroyWindow(mWindow);
@@ -102,35 +108,10 @@ void game::loadData()
 	mBall->setState(actor::EActive);
 
 	// Create Score
-	this->loadScore();
+//	this->loadScore();
+	getTrueTypeFont("resources/scoreFonts.ttf");
 
 
-}
-
-bool game::loadScore()
-{
-	//Loading success flag
-	bool success = true;
-/*
-	//Open the font
-	mFont = TTF_OpenFont( "TheConfessionFullRegular-8qGz.ttf",56 );
-	if( mFont == NULL )
-	{
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
-		success = false;
-	}
-	else
-	{
-		//Render text
-		SDL_Color textColor = { 0, 0, 0 };
-		if( !mTexture->loadFromRenderedText( "0 1 2 3 4 5 6 7 8 9", textColor ) )
-		{
-			printf( "Failed to render text texture!\n" );
-			success = false;
-		}
-	}
-*/
-	return success;
 }
 
 void game::unloadData()
@@ -148,8 +129,14 @@ void game::unloadData()
 		SDL_DestroyTexture(i.second);
 
 	mTextures.clear();
-}
 
+	// Destroy fonts
+	for (auto i : mTrueTypeFonts)
+		TTF_CloseFont(i.second);
+
+	mTrueTypeFonts.clear();
+
+}
 SDL_Texture* game::getTexture(const std::string& fileName)
 {
 	SDL_Texture* tex = nullptr;
@@ -175,6 +162,90 @@ SDL_Texture* game::getTexture(const std::string& fileName)
 		mTextures.emplace(fileName.c_str(), tex);
 	}
 	return tex;
+}
+
+SDL_Texture* game::getTextureFont(const std::string& fileNameTTF, std::string textureText)
+{
+	TTF_Font* Ttfont = nullptr;
+	SDL_Texture* tex = nullptr;
+	SDL_Color textColor = { 0, 0, 0 };
+
+	// Is the font already in the map?
+	auto iter = getTrueTypeFont(fileNameTTF);
+	if (iter != nullptr) {
+		SDL_Log("Failed to load font from memory ");
+		return nullptr;
+	}
+
+	//Render text surface
+	SDL_Surface* texSurface = TTF_RenderText_Solid( Ttfont, textureText.c_str(), textColor );
+	if( texSurface == NULL )
+	{
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
+	else
+	{
+		//Create texture from surface pixels
+        tex = SDL_CreateTextureFromSurface( mRenderer, texSurface );
+		if( tex == NULL )
+		{
+			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+		}
+/*		else
+		{
+			//Get image dimensions
+			mWidth = textSurface->w;
+			mHeight = textSurface->h;
+		}
+*/
+		//Get rid of old surface
+		SDL_FreeSurface( texSurface );
+	}
+
+	//Return success
+	return tex;
+}
+
+TTF_Font* game::getTrueTypeFont(const std::string& fontFileName)
+{
+	TTF_Font* Ttfont = nullptr;
+	// Is the texture already in the map?
+	auto iter = mTrueTypeFonts.find(fontFileName);
+	if (iter != mTrueTypeFonts.end()) {
+		Ttfont = iter->second;
+	} else {
+		// Load from file
+		Ttfont = TTF_OpenFont(fontFileName.c_str(),56);
+		if (!Ttfont) {
+			SDL_Log("Failed to load true type font %s with error %s", fontFileName.c_str(),TTF_GetError());
+			return nullptr;
+		}
+
+		mTrueTypeFonts.emplace(fontFileName.c_str(), Ttfont);
+	}
+	return Ttfont;
+
+/*
+	//Open the font
+	TTF_Font
+	mFont = TTF_OpenFont( "TheConfessionFullRegular-8qGz.ttf",56 );
+	if( mFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	else
+	{
+		//Render text
+		SDL_Color textColor = { 0, 0, 0 };
+		if( !mTexture->loadFromRenderedText( "0 1 2 3 4 5 6 7 8 9", textColor ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = false;
+		}
+	}
+
+	return success;*/
 }
 
 void game::processInput()
