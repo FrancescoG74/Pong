@@ -12,6 +12,7 @@
 #include "ball.h"
 #include "game.h"
 #include "background.h"
+#include "score.h"
 
 game::game()
 :mWindow{nullptr},mRenderer{nullptr},mIsRunning{true}
@@ -109,7 +110,20 @@ void game::loadData()
 
 	// Create Score
 	getTrueTypeFont("resources/scoreFonts.ttf");
+	actor* tempScore = new actor(this);
+	tempScore->setPosition(vector2(431.0f, 328.0f));
 
+	font* score = new font(tempScore);
+	std::vector<SDL_Texture*> fonttexs = {
+		getTextureFont("resources/scoreFonts.ttf","ciao"),
+		getTextureFont("resources/scoreFonts.ttf","ciccio")
+	};
+	score->setScoreTextures(fonttexs);
+
+/*	mBall->setPosition(vector2(428.0f, 295.0f));
+	mBall->setScale(1.0f);
+	mBall->setState(actor::EActive);
+*/
 
 }
 
