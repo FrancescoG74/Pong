@@ -113,12 +113,12 @@ void game::loadData()
 	actor* tempScore = new actor(this);
 	tempScore->setPosition(vector2(431.0f, 328.0f));
 
-	font* score = new font(tempScore);
+	score* scorePlayer1 = new score(tempScore);
 	std::vector<SDL_Texture*> fonttexs = {
 		getTextureFont("resources/scoreFonts.ttf","ciao"),
 		getTextureFont("resources/scoreFonts.ttf","ciccio")
 	};
-	score->setScoreTextures(fonttexs);
+	scorePlayer1->setScoreTextures(fonttexs);
 
 /*	mBall->setPosition(vector2(428.0f, 295.0f));
 	mBall->setScale(1.0f);
@@ -185,13 +185,14 @@ SDL_Texture* game::getTextureFont(const std::string& fileNameTTF, std::string te
 
 	// Is the font already in the map?
 	auto iter = getTrueTypeFont(fileNameTTF);
-	if (iter != nullptr) {
-		SDL_Log("Failed to load font from memory ");
+	SDL_Log("found it again");
+	if (iter == nullptr) {
+		SDL_Log("Failed to load font from memory %s", fileNameTTF.c_str());
 		return nullptr;
 	}
 
 	//Render text surface
-	SDL_Surface* texSurface = TTF_RenderText_Solid( Ttfont, textureText.c_str(), textColor );
+	SDL_Surface* texSurface = TTF_RenderText_Solid( iter, textureText.c_str(), textColor );
 	if( texSurface == NULL )
 	{
 		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -225,6 +226,7 @@ TTF_Font* game::getTrueTypeFont(const std::string& fontFileName)
 	// Is the texture already in the map?
 	auto iter = mTrueTypeFonts.find(fontFileName);
 	if (iter != mTrueTypeFonts.end()) {
+		SDL_Log("found it");
 		Ttfont = iter->second;
 	} else {
 		// Load from file
@@ -233,6 +235,7 @@ TTF_Font* game::getTrueTypeFont(const std::string& fontFileName)
 			SDL_Log("Failed to load true type font %s with error %s", fontFileName.c_str(),TTF_GetError());
 			return nullptr;
 		}
+		SDL_Log("insert it");
 
 		mTrueTypeFonts.emplace(fontFileName.c_str(), Ttfont);
 	}
