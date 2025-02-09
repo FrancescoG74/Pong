@@ -11,7 +11,9 @@
 
 score::score(actor* owner, int drawOrder)
 :font(owner, drawOrder),mScrollSpeed(0.0f)
-{}
+{
+	setColor(0xff,0xff,0xff);
+}
 
 void score::update(float deltaTime)
 {
@@ -34,14 +36,16 @@ void score::draw(SDL_Renderer* renderer)
 	for (auto& sctex : mScoreTextures) {
 		SDL_Rect r;
 		// Assume screen size dimensions
-		r.w = static_cast<int>(mScreenSize.x);
-		r.h = static_cast<int>(mScreenSize.y);
+		r.w = static_cast<int>(50);
+		r.h = static_cast<int>(50);
 		// Center the rectangle around the position of the owner
-		r.x = static_cast<int>(sctex.mOffset.x);
-		r.y = static_cast<int>(sctex.mOffset.y);
+		r.x = static_cast<int>(100);
+		r.y = static_cast<int>(100);
 
 		// Draw this background
 		SDL_RenderCopy(renderer, sctex.mTexture, nullptr, &r);
+
+//		SDL_Log("dest rect w=%u h=%u x=%u y=%u",mScreenSize.x, mScreenSize.y, sctex.mOffset.x, sctex.mOffset.y);
 	}
 }
 

@@ -109,21 +109,16 @@ void game::loadData()
 	mBall->setState(actor::EActive);
 
 	// Create Score
-	getTrueTypeFont("resources/scoreFonts.ttf");
+	getTrueTypeFont("resources/scoreFonts.ttf",500);
 	actor* tempScore = new actor(this);
-	tempScore->setPosition(vector2(431.0f, 328.0f));
+	tempScore->setPosition(vector2(50.0f, 50.0f));
 
 	score* scorePlayer1 = new score(tempScore);
 	std::vector<SDL_Texture*> fonttexs = {
-		getTextureFont("resources/scoreFonts.ttf","ciao"),
-		getTextureFont("resources/scoreFonts.ttf","ciccio")
+		getTextureFont("resources/scoreFonts.ttf","00"),
+//		getTextureFont("resources/scoreFonts.ttf","ciccio")
 	};
 	scorePlayer1->setScoreTextures(fonttexs);
-
-/*	mBall->setPosition(vector2(428.0f, 295.0f));
-	mBall->setScale(1.0f);
-	mBall->setState(actor::EActive);
-*/
 
 }
 
@@ -181,11 +176,10 @@ SDL_Texture* game::getTextureFont(const std::string& fileNameTTF, std::string te
 {
 	TTF_Font* Ttfont = nullptr;
 	SDL_Texture* tex = nullptr;
-	SDL_Color textColor = { 0, 0, 0 };
+	SDL_Color textColor = { 0xff, 0xff, 0xff };
 
 	// Is the font already in the map?
-	auto iter = getTrueTypeFont(fileNameTTF);
-	SDL_Log("found it again");
+	auto iter = getTrueTypeFont(fileNameTTF,200);
 	if (iter == nullptr) {
 		SDL_Log("Failed to load font from memory %s", fileNameTTF.c_str());
 		return nullptr;
@@ -220,22 +214,20 @@ SDL_Texture* game::getTextureFont(const std::string& fileNameTTF, std::string te
 	return tex;
 }
 
-TTF_Font* game::getTrueTypeFont(const std::string& fontFileName)
+TTF_Font* game::getTrueTypeFont(const std::string& fontFileName,int ptsize)
 {
 	TTF_Font* Ttfont = nullptr;
 	// Is the texture already in the map?
 	auto iter = mTrueTypeFonts.find(fontFileName);
 	if (iter != mTrueTypeFonts.end()) {
-		SDL_Log("found it");
 		Ttfont = iter->second;
 	} else {
 		// Load from file
-		Ttfont = TTF_OpenFont(fontFileName.c_str(),56);
+		Ttfont = TTF_OpenFont(fontFileName.c_str(),ptsize);
 		if (!Ttfont) {
 			SDL_Log("Failed to load true type font %s with error %s", fontFileName.c_str(),TTF_GetError());
 			return nullptr;
 		}
-		SDL_Log("insert it");
 
 		mTrueTypeFonts.emplace(fontFileName.c_str(), Ttfont);
 	}
@@ -318,6 +310,10 @@ void game::generateOutput()
 	// Draw all sprite components
 	for (auto sprite : mSprites)
 		sprite->draw(mRenderer);
+
+	// Draw all fonts components
+	for (auto font : mFonts)
+		font->draw(mRenderer);
 
 	SDL_RenderPresent(mRenderer);
 }

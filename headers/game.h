@@ -39,7 +39,7 @@ private:
 	void generateOutput();
 	void loadData();
 	void unloadData();
-	TTF_Font* getTrueTypeFont(const std::string& fontFileName);
+	TTF_Font* getTrueTypeFont(const std::string& fontFileName, int ptsize);
 	// Map of textures loaded
 	std::unordered_map<std::string, SDL_Texture*> mTextures;
 	// Map of fonts true type loaded
@@ -51,7 +51,7 @@ private:
 	std::vector<actor*> mPendingActors;
 	// All the sprite components drawn
 	std::vector<sprite*> mSprites;
-	// All the sprite components drawn
+	// All the font components drawn
 	std::vector<font*> mFonts;
 
 	SDL_Window* mWindow;
