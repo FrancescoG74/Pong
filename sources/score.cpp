@@ -36,11 +36,11 @@ void score::draw(SDL_Renderer* renderer)
 	for (auto& sctex : mScoreTextures) {
 		SDL_Rect r;
 		// Assume screen size dimensions
-		r.w = static_cast<int>(50);
-		r.h = static_cast<int>(50);
+		r.w = static_cast<int>(100);
+		r.h = static_cast<int>(100);
 		// Center the rectangle around the position of the owner
-		r.x = static_cast<int>(100);
-		r.y = static_cast<int>(100);
+		r.x = static_cast<int>(20);
+		r.y = static_cast<int>(20);
 
 		// Draw this background
 		SDL_RenderCopy(renderer, sctex.mTexture, nullptr, &r);

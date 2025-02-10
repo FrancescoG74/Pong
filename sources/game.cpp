@@ -109,7 +109,7 @@ void game::loadData()
 	mBall->setState(actor::EActive);
 
 	// Create Score
-	getTrueTypeFont("resources/scoreFonts.ttf",500);
+	getTrueTypeFont("resources/scoreFonts.ttf",200);
 	actor* tempScore = new actor(this);
 	tempScore->setPosition(vector2(50.0f, 50.0f));
 
