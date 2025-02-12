@@ -120,6 +120,15 @@ void game::loadData()
 	};
 	scorePlayer1->setScoreTextures(fonttexs);
 
+	// Create Score 2
+	actor* tempScore2 = new actor(this);
+	tempScore2->setPosition(vector2(650.0f, 50.0f));
+
+	score* scorePlayer2 = new score(tempScore2);
+	std::vector<SDL_Texture*> fonttexs2 = {
+		getTextureFont("resources/scoreFonts.ttf","00"),
+	};
+	scorePlayer2->setScoreTextures(fonttexs2);
 }
 
 void game::unloadData()
@@ -193,6 +202,8 @@ SDL_Texture* game::getTextureFont(const std::string& fileNameTTF, std::string te
 	}
 	else
 	{
+		SDL_Log("texSurface: %d-%d", texSurface->w, texSurface->h);
+
 		//Create texture from surface pixels
         tex = SDL_CreateTextureFromSurface( mRenderer, texSurface );
 		if( tex == NULL )

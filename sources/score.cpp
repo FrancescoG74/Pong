@@ -32,15 +32,19 @@ void score::update(float deltaTime)
 
 void score::draw(SDL_Renderer* renderer)
 {
+	vector2 pos = mOwner->getPosition();
+	
+//	SDL_Log("score position x=%f y=%f",pos.x, pos.y );
+
 	// Draw each background texture
 	for (auto& sctex : mScoreTextures) {
 		SDL_Rect r;
-		// Assume screen size dimensions
-		r.w = static_cast<int>(100);
-		r.h = static_cast<int>(100);
 		// Center the rectangle around the position of the owner
-		r.x = static_cast<int>(20);
-		r.y = static_cast<int>(20);
+		r.x = static_cast<int>(pos.x);
+		r.y = static_cast<int>(pos.y);
+		// Assume screen size dimensions
+		r.w = static_cast<int>(166);
+		r.h = static_cast<int>(200);
 
 		// Draw this background
 		SDL_RenderCopy(renderer, sctex.mTexture, nullptr, &r);
@@ -56,7 +60,7 @@ void score::setScoreTextures(const std::vector<SDL_Texture*>& textures)
 		ScoreTexture temp;
 		temp.mTexture = tex;
 		// Each texture is screen width in offset
-		temp.mOffset.x = count * mScreenSize.x;
+		temp.mOffset.x = count * mScreenSize.x; // TO CHECK
 		temp.mOffset.y = 0;
 		mScoreTextures.emplace_back(temp);
 		count++;
