@@ -1,6 +1,7 @@
 #include "math.h"
 #include "sprite.h"
 #include "font.h"
+#include "anim.h"
 #include "circle.h"
 #include "actor.h"
 #include "redpad.h"
@@ -9,60 +10,46 @@
 #include "game.h"
 #include "score.h"
 
-score::score(actor* owner, int drawOrder)
-:font(owner, drawOrder),mScrollSpeed(0.0f)
+score::score(game* game)
+:actor(game),mVx{0.0f},mVy{0.0f},
+mAnimSpeed{0.0f}
 {
-	setColor(0xff,0xff,0xff);
+//	setColor(0xff,0xff,0xff);
+
+
+	// Create an animated sprite component
+	anim* asc = new anim(this);
+	std::vector<SDL_Texture*> anims = {
+		game->getTextureFont("resources/scoreFonts.ttf","00"),
+//		game->getTexture("resources/bullet2.png"),
+//		game->getTexture("resources/bullet3.png"),
+	};
+	asc->setAnimTextures(anims);
+
 }
 
-void score::update(float deltaTime)
+void score::updateActor(float deltaTime)
 {
-/*	font::update(deltaTime);
-	for (auto& bg : mBGTextures) {
-		// Update the x offset
-		bg.mOffset.x += mScrollSpeed * deltaTime;
-		// If this is completely off the screen, reset offset to
-		// the right of the last bg texture
-		if (bg.mOffset.x < -mScreenSize.x) {
-			bg.mOffset.x = (mBGTextures.size() - 1) * mScreenSize.x - 1;
-		}
+	actor::updateActor(deltaTime);
+	// Update score point based behaviour of players
+/*	TO DO
+	float load=getFrameNum();
+	load += mAnimSpeed;
+	if (load < 0.0f)
+	{
+		load = 2.0f;
 	}
+	if (load > 2.0f)
+	{
+		load = 0.0f;
+	}
+	setFrameNum(load);
 */
 }
 
-void score::draw(SDL_Renderer* renderer)
+void score::setPow(float pow)
 {
-	vector2 pos = mOwner->getPosition();
-	
-//	SDL_Log("score position x=%f y=%f",pos.x, pos.y );
-
-	// Draw each background texture
-	for (auto& sctex : mScoreTextures) {
-		SDL_Rect r;
-		// Center the rectangle around the position of the owner
-		r.x = static_cast<int>(pos.x);
-		r.y = static_cast<int>(pos.y);
-		// Assume screen size dimensions
-		r.w = static_cast<int>(166);
-		r.h = static_cast<int>(200);
-
-		// Draw this background
-		SDL_RenderCopy(renderer, sctex.mTexture, nullptr, &r);
-
-//		SDL_Log("dest rect w=%u h=%u x=%u y=%u",mScreenSize.x, mScreenSize.y, sctex.mOffset.x, sctex.mOffset.y);
-	}
+	mVx = std::sqrt(pow) * 10;
+	mVy = std::sqrt(pow) * -10;
 }
 
-void score::setScoreTextures(const std::vector<SDL_Texture*>& textures)
-{
-	int count = 0;
-	for (auto tex : textures) {
-		ScoreTexture temp;
-		temp.mTexture = tex;
-		// Each texture is screen width in offset
-		temp.mOffset.x = count * mScreenSize.x; // TO CHECK
-		temp.mOffset.y = 0;
-		mScoreTextures.emplace_back(temp);
-		count++;
-	}
-}

@@ -92,6 +92,9 @@ void game::loadData()
 	bg->setScrollSpeed(-25.0f);
 
 	// **** ACTORS ****
+
+	// actors are signed as m***, but they aren't methods neither internal. Evaluate another name, like lBall (mean local ball) or something like that
+
 	// Create player's redpad
 	actor* mRedpad = new redpad(this);
 	mRedpad->setPosition(vector2(128.0f, 495.0f));
@@ -110,25 +113,12 @@ void game::loadData()
 
 	// Create Score
 	getTrueTypeFont("resources/scoreFonts.ttf",200);
-	actor* tempScore = new actor(this);
-	tempScore->setPosition(vector2(50.0f, 50.0f));
-
-	score* scorePlayer1 = new score(tempScore);
-	std::vector<SDL_Texture*> fonttexs = {
-		getTextureFont("resources/scoreFonts.ttf","00"),
-//		getTextureFont("resources/scoreFonts.ttf","ciccio")
-	};
-	scorePlayer1->setScoreTextures(fonttexs);
+	actor* mScore = new score(this);
+	mScore->setPosition(vector2(120.0f, 100.0f));
 
 	// Create Score 2
-	actor* tempScore2 = new actor(this);
-	tempScore2->setPosition(vector2(650.0f, 50.0f));
-
-	score* scorePlayer2 = new score(tempScore2);
-	std::vector<SDL_Texture*> fonttexs2 = {
-		getTextureFont("resources/scoreFonts.ttf","00"),
-	};
-	scorePlayer2->setScoreTextures(fonttexs2);
+	actor* mScore2 = new score(this);
+	mScore2->setPosition(vector2(720.0f, 100.0f));
 }
 
 void game::unloadData()
