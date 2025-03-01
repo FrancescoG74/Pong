@@ -7,17 +7,17 @@
 #include "redpad.h"
 #include "bluepad.h"
 #include "ball.h"
+#include "score.h"
 #include "game.h"
 #include "score.h"
 
-score::score(game* game)
-:actor(game),mVx{0.0f},mVy{0.0f},
+scorePlayer1::scorePlayer1(game* game)
+:actor(game),//,mVx{0.0f},mVy{0.0f},
 mAnimSpeed{0.01f}
 {
 //	setColor(0xff,0xff,0xff);
 
-
-	// Create an animated sprite component
+// Create an animated sprite component
 	anim* asc = new anim(this);
 	std::vector<SDL_Texture*> anims = {
 		game->getTextureFont("resources/scoreFonts.ttf","00"),
@@ -30,7 +30,7 @@ mAnimSpeed{0.01f}
 
 }
 
-void score::updateActor(float deltaTime)
+void scorePlayer1::updateActor(float deltaTime)
 {
 	actor::updateActor(deltaTime);
 	// Update score point based behaviour of players
@@ -47,10 +47,47 @@ void score::updateActor(float deltaTime)
 	}
 	setFrameNum(load);
 }
-
+/*
 void score::setPow(float pow)
 {
 	mVx = std::sqrt(pow) * 10;
 	mVy = std::sqrt(pow) * -10;
 }
+*/
 
+scorePlayer2::scorePlayer2(game* game)
+:actor(game),//,mVx{0.0f},mVy{0.0f},
+mAnimSpeed{0.01f}
+{
+//	setColor(0xff,0xff,0xff);
+
+// Create an animated sprite component
+	anim* asc = new anim(this);
+	std::vector<SDL_Texture*> anims = {
+		game->getTextureFont("resources/scoreFonts.ttf","00"),
+		game->getTextureFont("resources/scoreFonts.ttf","01"),
+		game->getTextureFont("resources/scoreFonts.ttf","02"),
+		game->getTextureFont("resources/scoreFonts.ttf","03"),
+		game->getTextureFont("resources/scoreFonts.ttf","04"),
+	};
+	asc->setAnimTextures(anims);
+
+}
+
+void scorePlayer2::updateActor(float deltaTime)
+{
+	actor::updateActor(deltaTime);
+	// Update score point based behaviour of players
+
+	float load=getFrameNum();
+	load += mAnimSpeed;
+	if (load < 0.0f)
+	{
+		load = 4.0f;
+	}
+	if (load >= 5.0f)
+	{
+		load = 0.0f;
+	}
+	setFrameNum(load);
+}

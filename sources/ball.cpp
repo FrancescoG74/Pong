@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "redpad.h"
 #include "bluepad.h"
+#include "score.h"
 #include "game.h"
 
 ball::ball(game* game)
@@ -48,6 +49,15 @@ void ball::updateActor(float deltaTime)
 		this->setState(EDead);
 	}
 	setPosition(pos);
+
+	// check score
+	if(pos.x < 0.0f){
+		SDL_Log("point for blue pad");
+	}
+	if(pos.x > 864.0f){
+		SDL_Log("point for red pad");
+	}
+
 
 	float load=getFrameNum();
 	load += mAnimSpeed;

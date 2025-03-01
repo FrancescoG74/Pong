@@ -10,9 +10,9 @@
 #include "redpad.h"
 #include "bluepad.h"
 #include "ball.h"
+#include "score.h"
 #include "game.h"
 #include "background.h"
-#include "score.h"
 
 game::game()
 :mWindow{nullptr},mRenderer{nullptr},mIsRunning{true}
@@ -113,11 +113,11 @@ void game::loadData()
 
 	// Create Score
 	getTrueTypeFont("resources/scoreFonts.ttf",200);
-	actor* mScore = new score(this);
+	actor* mScore = new scorePlayer1(this);
 	mScore->setPosition(vector2(120.0f, 100.0f));
 
 	// Create Score 2
-	actor* mScore2 = new score(this);
+	actor* mScore2 = new scorePlayer2(this);
 	mScore2->setPosition(vector2(720.0f, 100.0f));
 }
 
@@ -423,6 +423,32 @@ redpad* game::getRedpad()
 		redpadItem = dynamic_cast<redpad*>(actor);
 		if (redpadItem != nullptr){
 			return redpadItem;
+		}
+	}
+	return nullptr;
+}
+
+scorePlayer1* game::getScorePlayer1()
+{
+	scorePlayer1* scorePlayer1Item;
+	
+	for (auto actor : mActors){
+		scorePlayer1Item = dynamic_cast<scorePlayer1*>(actor);
+		if (scorePlayer1Item != nullptr){
+			return scorePlayer1Item;
+		}
+	}
+	return nullptr;
+}
+
+scorePlayer2* game::getScorePlayer2()
+{
+	scorePlayer2* scorePlayer2Item;
+	
+	for (auto actor : mActors){
+		scorePlayer2Item = dynamic_cast<scorePlayer2*>(actor);
+		if (scorePlayer2Item != nullptr){
+			return scorePlayer2Item;
 		}
 	}
 	return nullptr;

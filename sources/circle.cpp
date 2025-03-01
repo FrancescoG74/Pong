@@ -8,6 +8,7 @@
 #include "redpad.h"
 #include "bluepad.h"
 #include "ball.h"
+#include "score.h"
 #include "game.h"
 
 circle::circle(actor* owner)

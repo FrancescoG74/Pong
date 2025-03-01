@@ -10,6 +10,7 @@
 #include "bluepad.h"
 #include "redpad.h"
 #include "ball.h"
+#include "score.h"
 #include "game.h"
 
 bluepad::bluepad(game* game)
