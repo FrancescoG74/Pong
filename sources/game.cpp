@@ -256,6 +256,14 @@ void game::processInput()
 
 	if (mToBeReleased && !state[SDL_SCANCODE_SPACE]){
 		mToBeReleased = false;
+		// Create player's ball
+		actor* mBall = new ball(this);
+		mBall->setPosition(vector2(428.0f, 295.0f));
+		mBall->setScale(1.0f);
+		mBall->setState(actor::EActive);
+	}
+
+	if (state[SDL_SCANCODE_R]){
 	}
 
 	// Process catapult input

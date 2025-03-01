@@ -11,8 +11,9 @@ public:
 	scorePlayer1(game* game);
 	void updateActor(float deltaTime) override;
 	void processKeyboard(const Uint8* state){};
+	void setPoint(){mPoint=1;};
 private:
-	float mAnimSpeed;
+	int mPoint;
 };
 
 class scorePlayer2 : public actor
@@ -21,8 +22,9 @@ public:
 	scorePlayer2(game* game);
 	void updateActor(float deltaTime) override;
 	void processKeyboard(const Uint8* state){};
+	void setPoint(){mPoint=1;};
 private:
-	float mAnimSpeed;
+	int mPoint;
 };
 
 #endif

@@ -12,7 +12,7 @@
 #include "score.h"
 
 scorePlayer1::scorePlayer1(game* game)
-:actor(game),mAnimSpeed{0.01f}
+:actor(game),mPoint{0}
 {
 //	setColor(0xff,0xff,0xff);
 
@@ -35,20 +35,13 @@ void scorePlayer1::updateActor(float deltaTime)
 	// Update score point based behaviour of players
 
 	float load=getFrameNum();
-	load += mAnimSpeed;
-	if (load < 0.0f)
-	{
-		load = 4.0f;
-	}
-	if (load >= 5.0f)
-	{
-		load = 0.0f;
-	}
+	load += mPoint;
 	setFrameNum(load);
+	mPoint = 0;
 }
 
 scorePlayer2::scorePlayer2(game* game)
-:actor(game),mAnimSpeed{0.01f}
+:actor(game),mPoint{0}
 {
 //	setColor(0xff,0xff,0xff);
 
@@ -71,14 +64,7 @@ void scorePlayer2::updateActor(float deltaTime)
 	// Update score point based behaviour of players
 
 	float load=getFrameNum();
-	load += mAnimSpeed;
-	if (load < 0.0f)
-	{
-		load = 4.0f;
-	}
-	if (load >= 5.0f)
-	{
-		load = 0.0f;
-	}
+	load += mPoint;
 	setFrameNum(load);
+	mPoint = 0;
 }
