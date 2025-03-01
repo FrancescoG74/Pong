@@ -12,8 +12,7 @@
 #include "score.h"
 
 scorePlayer1::scorePlayer1(game* game)
-:actor(game),//,mVx{0.0f},mVy{0.0f},
-mAnimSpeed{0.01f}
+:actor(game),mAnimSpeed{0.01f}
 {
 //	setColor(0xff,0xff,0xff);
 
@@ -47,17 +46,9 @@ void scorePlayer1::updateActor(float deltaTime)
 	}
 	setFrameNum(load);
 }
-/*
-void score::setPow(float pow)
-{
-	mVx = std::sqrt(pow) * 10;
-	mVy = std::sqrt(pow) * -10;
-}
-*/
 
 scorePlayer2::scorePlayer2(game* game)
-:actor(game),//,mVx{0.0f},mVy{0.0f},
-mAnimSpeed{0.01f}
+:actor(game),mAnimSpeed{0.01f}
 {
 //	setColor(0xff,0xff,0xff);
 
