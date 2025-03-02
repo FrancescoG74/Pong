@@ -1,10 +1,12 @@
 #include "math.h"
 #include "sprite.h"
+#include "font.h"
 #include "circle.h"
 #include "actor.h"
 #include "redpad.h"
 #include "bluepad.h"
 #include "ball.h"
+#include "score.h"
 #include "game.h"
 #include "background.h"
 

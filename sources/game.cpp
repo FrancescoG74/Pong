@@ -5,10 +5,12 @@
 #include "component.h"
 #include "circle.h"
 #include "sprite.h"
+#include "font.h"
 #include "actor.h"
 #include "redpad.h"
 #include "bluepad.h"
 #include "ball.h"
+#include "score.h"
 #include "game.h"
 #include "background.h"
 
@@ -41,6 +43,11 @@ bool game::initialize()
 		return false;
 	}
 
+	if (TTF_Init() == -1) {
+		SDL_Log("Unable to initialize TTF_Init: %s", SDL_GetError());
+		return false;
+	}
+
 	loadData();
 
 	mTicksCount = SDL_GetTicks();
@@ -60,6 +67,7 @@ void game::runLoop()
 void game::shutdown()
 {
 	unloadData();
+	TTF_Quit();
 	IMG_Quit();
 	SDL_DestroyRenderer(mRenderer);
 	SDL_DestroyWindow(mWindow);
@@ -74,7 +82,7 @@ void game::loadData()
 	temp->setPosition(vector2(431.0f, 328.0f));
 
 	// Create the "far back" background
-	background* bg = new background(temp); //NOBODY DESTROY BG <--- BE CAREFUL, FIX IT
+	background* bg = new background(temp);
 	bg->setScreenSize(vector2(862.0f, 657.0f));
 	std::vector<SDL_Texture*> bgtexs = {
 		getTexture("resources/background_star.png"),
@@ -84,6 +92,9 @@ void game::loadData()
 	bg->setScrollSpeed(-25.0f);
 
 	// **** ACTORS ****
+
+	// actors are signed as m***, but they aren't methods neither internal. Evaluate another name, like lBall (mean local ball) or something like that
+
 	// Create player's redpad
 	actor* mRedpad = new redpad(this);
 	mRedpad->setPosition(vector2(128.0f, 495.0f));
@@ -100,6 +111,14 @@ void game::loadData()
 	mBall->setScale(1.0f);
 	mBall->setState(actor::EActive);
 
+	// Create Score
+	getTrueTypeFont("resources/scoreFonts.ttf",200);
+	actor* mScore = new scorePlayer1(this);
+	mScore->setPosition(vector2(120.0f, 100.0f));
+
+	// Create Score 2
+	actor* mScore2 = new scorePlayer2(this);
+	mScore2->setPosition(vector2(720.0f, 100.0f));
 }
 
 void game::unloadData()
@@ -117,8 +136,14 @@ void game::unloadData()
 		SDL_DestroyTexture(i.second);
 
 	mTextures.clear();
-}
 
+	// Destroy fonts
+	for (auto i : mTrueTypeFonts)
+		TTF_CloseFont(i.second);
+
+	mTrueTypeFonts.clear();
+
+}
 SDL_Texture* game::getTexture(const std::string& fileName)
 {
 	SDL_Texture* tex = nullptr;
@@ -146,6 +171,70 @@ SDL_Texture* game::getTexture(const std::string& fileName)
 	return tex;
 }
 
+SDL_Texture* game::getTextureFont(const std::string& fileNameTTF, std::string textureText)
+{
+	TTF_Font* Ttfont = nullptr;
+	SDL_Texture* tex = nullptr;
+	SDL_Color textColor = { 0xff, 0xff, 0xff };
+
+	// Is the font already in the map?
+	auto iter = getTrueTypeFont(fileNameTTF,200);
+	if (iter == nullptr) {
+		SDL_Log("Failed to load font from memory %s", fileNameTTF.c_str());
+		return nullptr;
+	}
+
+	//Render text surface
+	SDL_Surface* texSurface = TTF_RenderText_Solid( iter, textureText.c_str(), textColor );
+	if( texSurface == NULL )
+	{
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
+	else
+	{
+		SDL_Log("texSurface: %d-%d", texSurface->w, texSurface->h);
+
+		//Create texture from surface pixels
+        tex = SDL_CreateTextureFromSurface( mRenderer, texSurface );
+		if( tex == NULL )
+		{
+			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+		}
+/*		else
+		{
+			//Get image dimensions
+			mWidth = textSurface->w;
+			mHeight = textSurface->h;
+		}
+*/
+		//Get rid of old surface
+		SDL_FreeSurface( texSurface );
+	}
+
+	//Return success
+	return tex;
+}
+
+TTF_Font* game::getTrueTypeFont(const std::string& fontFileName,int ptsize)
+{
+	TTF_Font* Ttfont = nullptr;
+	// Is the texture already in the map?
+	auto iter = mTrueTypeFonts.find(fontFileName);
+	if (iter != mTrueTypeFonts.end()) {
+		Ttfont = iter->second;
+	} else {
+		// Load from file
+		Ttfont = TTF_OpenFont(fontFileName.c_str(),ptsize);
+		if (!Ttfont) {
+			SDL_Log("Failed to load true type font %s with error %s", fontFileName.c_str(),TTF_GetError());
+			return nullptr;
+		}
+
+		mTrueTypeFonts.emplace(fontFileName.c_str(), Ttfont);
+	}
+	return Ttfont;
+}
+
 void game::processInput()
 {
 	SDL_Event event;
@@ -167,6 +256,14 @@ void game::processInput()
 
 	if (mToBeReleased && !state[SDL_SCANCODE_SPACE]){
 		mToBeReleased = false;
+		// Create player's ball
+		actor* mBall = new ball(this);
+		mBall->setPosition(vector2(428.0f, 295.0f));
+		mBall->setScale(1.0f);
+		mBall->setState(actor::EActive);
+	}
+
+	if (state[SDL_SCANCODE_R]){
 	}
 
 	// Process catapult input
@@ -222,6 +319,10 @@ void game::generateOutput()
 	// Draw all sprite components
 	for (auto sprite : mSprites)
 		sprite->draw(mRenderer);
+
+	// Draw all fonts components
+	for (auto font : mFonts)
+		font->draw(mRenderer);
 
 	SDL_RenderPresent(mRenderer);
 }
@@ -282,6 +383,33 @@ void game::removeSprite(sprite* sprite)
 	mSprites.erase(iter);
 }
 
+void game::addFont(font* font)
+{
+	// Find the insertion point in the sorted vector
+	// (The first element with a higher draw order than me)
+	int myDrawOrder = font->getDrawOrder();
+	auto iter = mFonts.begin();
+	for ( ;
+		iter != mFonts.end();
+		++iter)
+	{
+		if (myDrawOrder < (*iter)->getDrawOrder())
+		{
+			break;
+		}
+	}
+
+	// Inserts element before position of iterator
+	mFonts.insert(iter, font);
+}
+
+void game::removeFont(font* font)
+{
+	// (We can't swap because it ruins ordering)
+	auto iter = std::find(mFonts.begin(), mFonts.end(), font);
+	mFonts.erase(iter);
+}
+
 bluepad* game::getBluepad()
 {
 	bluepad* bluepadItem;
@@ -303,6 +431,32 @@ redpad* game::getRedpad()
 		redpadItem = dynamic_cast<redpad*>(actor);
 		if (redpadItem != nullptr){
 			return redpadItem;
+		}
+	}
+	return nullptr;
+}
+
+scorePlayer1* game::getScorePlayer1()
+{
+	scorePlayer1* scorePlayer1Item;
+	
+	for (auto actor : mActors){
+		scorePlayer1Item = dynamic_cast<scorePlayer1*>(actor);
+		if (scorePlayer1Item != nullptr){
+			return scorePlayer1Item;
+		}
+	}
+	return nullptr;
+}
+
+scorePlayer2* game::getScorePlayer2()
+{
+	scorePlayer2* scorePlayer2Item;
+	
+	for (auto actor : mActors){
+		scorePlayer2Item = dynamic_cast<scorePlayer2*>(actor);
+		if (scorePlayer2Item != nullptr){
+			return scorePlayer2Item;
 		}
 	}
 	return nullptr;

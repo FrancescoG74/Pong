@@ -3,12 +3,14 @@
 #include "math.h"
 #include "component.h"
 #include "sprite.h"
+#include "font.h"
 #include "anim.h"
 #include "circle.h"
 #include "actor.h"
 #include "bluepad.h"
 #include "redpad.h"
 #include "ball.h"
+#include "score.h"
 #include "game.h"
 
 bluepad::bluepad(game* game)
