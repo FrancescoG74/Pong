@@ -1,5 +1,15 @@
 cmake_minimum_required(VERSION 2.8.12)
 
+# Add this to the top of your CMakeLists.txt
+include(FetchContent)
+FetchContent_Declare(
+  catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG v2.13.7 # or the latest version
+)
+FetchContent_MakeAvailable(catch2)
+
+
 project(pong)
 
 set(CMAKE_BUILD_TYPE DEBUG)
@@ -21,3 +31,7 @@ add_executable(${PROJECT_NAME} "sources/main.cpp" "sources/game.cpp" "sources/ac
 target_link_libraries(${PROJECT_NAME} rt SDL2 SDL2_image SDL2_ttf)
 
 file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION .)
+
+#Add this to the bottom of your CMakeLists.txt
+add_executable(tests tests/main.cpp)
+target_link_libraries(tests Catch2::Catch2)
