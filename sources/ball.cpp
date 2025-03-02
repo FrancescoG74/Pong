@@ -53,12 +53,12 @@ void ball::updateActor(float deltaTime)
 	// check score
 	if(pos.x < 0.0f){
 		SDL_Log("point for blue pad");
-		scorePlayer1* scorePly1 = getGame()->getScorePlayer1();
+		scorePlayer* scorePly1 = getGame()->getScorePlayer(scorePlayer::PLAYER1);
 		scorePly1->setPoint();
 	}
 	if(pos.x > 864.0f){
 		SDL_Log("point for red pad");
-		scorePlayer2* scorePly2 = getGame()->getScorePlayer2();
+		scorePlayer* scorePly2 = getGame()->getScorePlayer(scorePlayer::PLAYER2);
 		scorePly2->setPoint();
 	}
 

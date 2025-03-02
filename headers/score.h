@@ -5,26 +5,19 @@
 
 #include "font.h"
 
-class scorePlayer1 : public actor
+class scorePlayer : public actor
 {
 public:
-	scorePlayer1(game* game);
-	void updateActor(float deltaTime) override;
-	void processKeyboard(const Uint8* state){};
-	void setPoint(){mPoint=1;};
-private:
-	int mPoint;
-};
+	enum playerType {PLAYER1, PLAYER2};
 
-class scorePlayer2 : public actor
-{
-public:
-	scorePlayer2(game* game);
+	scorePlayer(game* game,playerType player);
 	void updateActor(float deltaTime) override;
 	void processKeyboard(const Uint8* state){};
 	void setPoint(){mPoint=1;};
+	playerType getPlayer(){return mPlayer;};
 private:
 	int mPoint;
+	playerType mPlayer;
 };
 
 #endif
