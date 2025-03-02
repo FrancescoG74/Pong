@@ -33,8 +33,7 @@ public:
 	bluepad* getBluepad();
 	redpad* getRedpad();
 
-	scorePlayer1* getScorePlayer1();
-	scorePlayer2* getScorePlayer2();
+	scorePlayer* getScorePlayer(scorePlayer::playerType player);
 
 private:
 	void processInput();

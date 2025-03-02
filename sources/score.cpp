@@ -11,8 +11,8 @@
 #include "game.h"
 #include "score.h"
 
-scorePlayer1::scorePlayer1(game* game)
-:actor(game),mPoint{0}
+scorePlayer::scorePlayer(game* game, playerType player)
+:actor(game),mPoint{0},mPlayer{player}
 {
 //	setColor(0xff,0xff,0xff);
 
@@ -29,36 +29,7 @@ scorePlayer1::scorePlayer1(game* game)
 
 }
 
-void scorePlayer1::updateActor(float deltaTime)
-{
-	actor::updateActor(deltaTime);
-	// Update score point based behaviour of players
-
-	float load=getFrameNum();
-	load += mPoint;
-	setFrameNum(load);
-	mPoint = 0;
-}
-
-scorePlayer2::scorePlayer2(game* game)
-:actor(game),mPoint{0}
-{
-//	setColor(0xff,0xff,0xff);
-
-// Create an animated sprite component
-	anim* asc = new anim(this);
-	std::vector<SDL_Texture*> anims = {
-		game->getTextureFont("resources/scoreFonts.ttf","00"),
-		game->getTextureFont("resources/scoreFonts.ttf","01"),
-		game->getTextureFont("resources/scoreFonts.ttf","02"),
-		game->getTextureFont("resources/scoreFonts.ttf","03"),
-		game->getTextureFont("resources/scoreFonts.ttf","04"),
-	};
-	asc->setAnimTextures(anims);
-
-}
-
-void scorePlayer2::updateActor(float deltaTime)
+void scorePlayer::updateActor(float deltaTime)
 {
 	actor::updateActor(deltaTime);
 	// Update score point based behaviour of players

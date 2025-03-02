@@ -113,11 +113,11 @@ void game::loadData()
 
 	// Create Score
 	getTrueTypeFont("resources/scoreFonts.ttf",200);
-	actor* mScore = new scorePlayer1(this);
-	mScore->setPosition(vector2(120.0f, 100.0f));
+	actor* mScore1 = new scorePlayer(this,scorePlayer::PLAYER1);
+	mScore1->setPosition(vector2(120.0f, 100.0f));
 
 	// Create Score 2
-	actor* mScore2 = new scorePlayer2(this);
+	actor* mScore2 = new scorePlayer(this,scorePlayer::PLAYER2);
 	mScore2->setPosition(vector2(720.0f, 100.0f));
 }
 
@@ -436,27 +436,14 @@ redpad* game::getRedpad()
 	return nullptr;
 }
 
-scorePlayer1* game::getScorePlayer1()
+scorePlayer* game::getScorePlayer(scorePlayer::playerType player)
 {
-	scorePlayer1* scorePlayer1Item;
+	scorePlayer* scorePlayerItem;
 	
 	for (auto actor : mActors){
-		scorePlayer1Item = dynamic_cast<scorePlayer1*>(actor);
-		if (scorePlayer1Item != nullptr){
-			return scorePlayer1Item;
-		}
-	}
-	return nullptr;
-}
-
-scorePlayer2* game::getScorePlayer2()
-{
-	scorePlayer2* scorePlayer2Item;
-	
-	for (auto actor : mActors){
-		scorePlayer2Item = dynamic_cast<scorePlayer2*>(actor);
-		if (scorePlayer2Item != nullptr){
-			return scorePlayer2Item;
+		scorePlayerItem = dynamic_cast<scorePlayer*>(actor);
+		if (scorePlayerItem != nullptr && scorePlayerItem->getPlayer() == player){
+			return scorePlayerItem;
 		}
 	}
 	return nullptr;
