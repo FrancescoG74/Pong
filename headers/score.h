@@ -16,6 +16,7 @@ public:
 	void setPoint(){mPoint=1;};
 	playerType getPlayer(){return mPlayer;};
 private:
+	int maxPoint;	
 	int mPoint;
 	playerType mPlayer;
 };

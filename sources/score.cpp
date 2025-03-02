@@ -12,19 +12,16 @@
 #include "score.h"
 
 scorePlayer::scorePlayer(game* game, playerType player)
-:actor(game),mPoint{0},mPlayer{player}
+:actor(game),maxPoint{5},mPoint{0},mPlayer{player}
 {
 //	setColor(0xff,0xff,0xff);
 
 // Create an animated sprite component
 	anim* asc = new anim(this);
-	std::vector<SDL_Texture*> anims = {
-		game->getTextureFont("resources/scoreFonts.ttf","00"),
-		game->getTextureFont("resources/scoreFonts.ttf","01"),
-		game->getTextureFont("resources/scoreFonts.ttf","02"),
-		game->getTextureFont("resources/scoreFonts.ttf","03"),
-		game->getTextureFont("resources/scoreFonts.ttf","04"),
-	};
+	std::vector<SDL_Texture*> anims (5);
+	for(int i=0;i<5;i++){
+		anims[i] = game->getTextureFont("resources/scoreFonts.ttf",std::to_string(i));
+	}
 	asc->setAnimTextures(anims);
 
 }
@@ -36,6 +33,7 @@ void scorePlayer::updateActor(float deltaTime)
 
 	float load=getFrameNum();
 	load += mPoint;
-	setFrameNum(load);
+	if(load<maxPoint)
+		setFrameNum(load);
 	mPoint = 0;
 }
