@@ -18,8 +18,8 @@ scorePlayer::scorePlayer(game* game, playerType player)
 
 // Create an animated sprite component
 	anim* asc = new anim(this);
-	std::vector<SDL_Texture*> anims (5);
-	for(int i=0;i<5;i++){
+	std::vector<SDL_Texture*> anims (maxPoint);
+	for(int i=0;i<maxPoint;i++){
 		anims[i] = game->getTextureFont("resources/scoreFonts.ttf",std::to_string(i));
 	}
 	asc->setAnimTextures(anims);
