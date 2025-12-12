@@ -13,10 +13,12 @@
 #include "score.h"
 #include "game.h"
 #include "background.h"
+#include <SDL2/SDL_mixer.h>
 
 game::game()
 :mWindow{nullptr},mRenderer{nullptr},mIsRunning{true}
 ,mUpdatingActors{false},mNbullet{0},mToBeReleased{false}
+,mWavBuffer{nullptr},mWavLength{0},mAudioDevice{0},mMusicPlaying{false},mMusic{nullptr}
 {}
 
 bool game::initialize()
@@ -48,6 +50,14 @@ bool game::initialize()
 		return false;
 	}
 
+	// Initialize SDL_mixer for music playback
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		SDL_Log("Unable to initialize SDL_mixer: %s", Mix_GetError());
+		// Continue without music if mixer fails
+	} else {
+		SDL_Log("SDL_mixer initialized");
+	}
+
 	loadData();
 
 	mTicksCount = SDL_GetTicks();
@@ -67,6 +77,10 @@ void game::runLoop()
 void game::shutdown()
 {
 	unloadData();
+
+	// Close SDL_mixer audio
+	Mix_CloseAudio();
+	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_DestroyRenderer(mRenderer);
@@ -119,6 +133,18 @@ void game::loadData()
 	// Create Score 2
 	actor* mScore2 = new scorePlayer(this,scorePlayer::PLAYER2);
 	mScore2->setPosition(vector2(720.0f, 100.0f));
+
+	// Load and play background music using SDL_mixer
+	mMusic = Mix_LoadMUS("resources/game-music-player-console-8bit-background.wav");
+	if (!mMusic) {
+		SDL_Log("Failed to load music: %s", Mix_GetError());
+	} else {
+		if (Mix_PlayMusic(mMusic, -1) == -1) {
+			SDL_Log("Failed to play music: %s", Mix_GetError());
+		} else {
+			mMusicPlaying = true;
+		}
+	}
 }
 
 void game::unloadData()
@@ -142,6 +168,16 @@ void game::unloadData()
 		TTF_CloseFont(i.second);
 
 	mTrueTypeFonts.clear();
+
+	// Stop and free music if playing (SDL_mixer)
+	if (mMusicPlaying) {
+		Mix_HaltMusic();
+		if (mMusic) {
+			Mix_FreeMusic(mMusic);
+			mMusic = nullptr;
+		}
+		mMusicPlaying = false;
+	}
 
 }
 SDL_Texture* game::getTexture(const std::string& fileName)
