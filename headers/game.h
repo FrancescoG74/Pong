@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <unordered_map>
 #include <string>
 #include <vector>
@@ -64,6 +65,16 @@ private:
 	bool mUpdatingActors;
 	int	 mNbullet;
 	bool mToBeReleased;
+
+	// Audio (simple WAV playback using SDL2 audio)
+	SDL_AudioSpec mWavSpec;
+	Uint8* mWavBuffer;
+	Uint32 mWavLength;
+	SDL_AudioDeviceID mAudioDevice;
+	bool mMusicPlaying;
+
+	// SDL_mixer music handle
+	Mix_Music* mMusic;
 
 	//Globally used font
 //	TTF_Font* mFont = NULL;
